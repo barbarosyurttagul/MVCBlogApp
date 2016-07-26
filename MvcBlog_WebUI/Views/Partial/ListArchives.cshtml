@@ -1,0 +1,12 @@
+﻿@using MvcBlog.Model
+@model IEnumerable<DateTime>
+
+<div class="category-widget widget">
+    <h3>Arşiv</h3>
+    <ul class="category-list">
+        @foreach (var item in Model)
+        {
+            <li><a href="/Archive/Index?year=@item.Year&month=@item.Month">@item.ToString("MMMM yyyy").ToUpper()</a></li>
+        }
+    </ul>
+</div>

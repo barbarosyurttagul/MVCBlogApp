@@ -1,0 +1,47 @@
+﻿@using MvcBlog.Model
+@model List<Article>
+
+
+<div id="divSearchResults">
+    @foreach (Article item in Model)
+    {
+        <div class="blog-post triggerAnimation animated" data-animate="slideInUp">
+            <a href="/Article/Detail/@item.Id"><img alt="" src="@item.Photo.CoverPicPath"></a>
+            <div class="post-content">
+                <div class="post-date">
+                    <p><span>@item.PublishDate.Value.Day</span>@Convert.ToDateTime(item.PublishDate).ToString("MMM")</p>
+                </div>
+                <div class="content-data">
+                    <h2><a href="/Article/Detail/@item.Id">@item.ArticleName.ToUpper()</a></h2>
+                    <p><a>@item.Comments.Count Yorum</a></p>
+                </div>
+                
+                @if (item.ArticleContent.Length > 300)
+                {
+                    @Html.Raw(item.ArticleContent.Substring(0, 300))
+                }
+                else
+                {
+                    @Html.Raw(item.ArticleContent)
+                }
+
+
+                <a class="button-third" href="/Article/Detail/@item.Id">Devam et</a>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="pagination-box">
+    @for (int i = 1; i <= ViewBag.NumberOfPages; i++)
+    {
+        if (i == ViewBag.CurrentPage)
+        {
+            @i
+        }
+        else
+        {
+            <a class="button-third" href="javascript:void()">@i</a>
+        }
+    }
+</div>

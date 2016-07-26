@@ -1,0 +1,220 @@
+﻿<!doctype html>
+
+
+<html lang="en" class="no-js">
+<head>
+    <title>@ViewBag.Title</title>
+
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <link href='http://fonts.googleapis.com/css?family=Raleway:400,500,600,700,300,100,200' rel='stylesheet' type='text/css'>
+
+    @Styles.Render("~/Content/css")
+    @RenderSection("myStyles", false)
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="~/Scripts/MyScripts/Facebook.js"></script>
+    
+</head>
+<body>
+
+    
+    <!-- Container -->
+    <div id="container">
+        <!-- Header
+            ================================================== -->
+        <header class="clearfix">
+            <!-- Static navbar -->
+            <div class="navbar navbar-default navbar-fixed-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="/Home/Index"><img alt="" src="/Content/images/logo.png"></a>
+                    </div>
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav navbar-right">
+
+
+
+                            @{ Html.RenderAction("Login", "Partial");}
+                            <li><a class="active" href="/Home/Index">Ana Sayfa</a></li>
+                            <li><a href="/Home/About">Hakkımda</a></li>
+                            <li><a href="/Home/Contact">İLETİŞİM</a></li>
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- End Header -->
+        <!-- page-banner
+            ================================================== -->
+        <div class="section-content page-banner blog-page-banner">
+            <div class="container">
+                <h1>@ViewBag.Title</h1>
+            </div>
+        </div>
+
+        <!-- content
+            ================================================== -->
+        <div id="content">
+
+            
+            @RenderSection("Title", false)
+
+
+            <!-- blog-section
+                ================================================== -->
+            <div class="section-content blog-section with-sidebar">
+                <div class="container">
+                    <div class="blog-box">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="sidebar triggerAnimation animated" data-animate="slideInUp">
+                                    <div class="search-widget widget">
+                                        <input id="txtSearch" type="text" placeholder="Ara:" />
+                                        <button id="btnSearch" type="submit">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>                                
+    
+                                    @{
+                                        Html.RenderAction("ListCategory", "Partial");
+                                        Html.RenderAction("ListRecentComments", "Partial");
+                                        Html.RenderAction("ListPopularArticles", "Partial");
+                                        Html.RenderAction("ListArchives", "Partial");
+                                        Html.RenderAction("ListTags", "Partial");
+                                    }
+
+                                    @RenderSection("RightBottom", false)
+
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-9">
+
+                                @RenderBody()
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <a class="go-top" href="#"><i class="fa fa-arrow-circle-o-up"></i></a>
+            </div>
+
+
+        </div>
+        <!-- End content -->
+        <!-- footer
+            ================================================== -->
+        <footer>
+            <div class="social-section">
+                <ul class="social-icons">
+                    <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+                    <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
+                    <li><a class="rss" href="#"><i class="fa fa-rss"></i></a></li>
+                    <li><a class="google" href="#"><i class="fa fa-google-plus"></i></a></li>
+                    <li><a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a></li>
+                    <li><a class="pinterest" href="#"><i class="fa fa-pinterest"></i></a></li>
+                </ul>
+            </div>
+            <div class="up-footer">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-md-3 triggerAnimation animated" data-animate="fadeInLeft">
+                            <div class="widget footer-widget text-widget">
+                                <h1>About</h1>
+                                <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. </p>
+                                <p>Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. </p>
+                                <img src="/Content/images/footer-logo.png" alt="">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 triggerAnimation animated" data-animate="fadeInUp">
+                            <div class="widget footer-widget tweets-widget">
+                                <h1>Recent Tweets</h1>
+                                <ul>
+                                    <li>
+                                        <i class="fa fa-twitter"></i>
+                                        <p>Photoshop to CSS3 magic - CSS Hat - <a href="#">http://t.co/ad2CggDN</a> </p>
+                                        <span>15 June 2012</span>
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-twitter"></i>
+                                        <p>CrossFit Advanced - another well done website, featured on CSSLuxury -  <a href="#">http://t.co/ad2CggDN</a> </p>
+                                        <span>15 June 2012</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 triggerAnimation animated" data-animate="fadeInRight">
+                            <div class="widget footer-widget flickr-widget">
+                                <h1>Flickr Stream</h1>
+                                <ul class="flickr">
+                                    <li><a href="#"><img alt="" src="http://placehold.it/70x70"></a></li>
+                                    <li><a href="#"><img alt="" src="http://placehold.it/70x70"></a></li>
+                                    <li><a href="#"><img alt="" src="http://placehold.it/70x70"></a></li>
+                                    <li><a href="#"><img alt="" src="http://placehold.it/70x70"></a></li>
+                                    <li><a href="#"><img alt="" src="http://placehold.it/70x70"></a></li>
+                                    <li><a href="#"><img alt="" src="http://placehold.it/70x70"></a></li>
+                                    <li><a href="#"><img alt="" src="http://placehold.it/70x70"></a></li>
+                                    <li><a href="#"><img alt="" src="http://placehold.it/70x70"></a></li>
+                                    <li><a href="#"><img alt="" src="http://placehold.it/70x70"></a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 triggerAnimation animated" data-animate="fadeInDown">
+                            <div class="widget footer-widget subscribe-widget">
+                                <h1>Subscribe</h1>
+                                <p>Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. </p>
+                                <form class="subscribe-form">
+                                    <input type="text" id="e-mail" name="e-mail" placeholder="Email Address" />
+                                    <input type="submit" id="submit" value="submit" />
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="footer-line">
+                        <p>Copyright 2014. "marble" by UpiFix. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+
+        </footer>
+        <!-- End footer -->
+    </div>
+    <!-- End Container -->
+
+    @Scripts.Render("~/bundles/jquery")
+    
+    @RenderSection("myScripts", false)
+    <script type="text/javascript">
+        $().ready(function () {
+            $("#btnLogOut").click(function () {
+                
+                $.ajax({
+                    url: '@Url.Action("Logout","Member")',
+                    method: "post"
+                }).success(function () {
+                    window.location.href= "/Home/Index";
+                });
+            });
+        });
+    </script>
+
+    
+
+</body>
+</html>

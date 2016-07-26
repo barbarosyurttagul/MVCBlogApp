@@ -1,0 +1,110 @@
+﻿
+@{
+    ViewBag.Title = "Article";
+    Layout = "~/Areas/AdminPanel/Views/Shared/_Layout.cshtml";
+}
+<script src="~/ckeditor/ckeditor.js"></script>
+<script src="~/ckeditor/adapters/jquery.js"></script>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-6">
+            <!-- general form elements -->
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Makale Ekle</h3>
+                </div><!-- /.box-header -->
+                <!-- form start -->
+                @*<form role="form">*@
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label >Makale Başlığı</label>
+                            <input type="text" class="form-control" id="txtArticleName" placeholder="Makale Başlığı">
+                        </div>
+                        <div class="form-group">
+                            <label >Kategorisi</label>
+                            @Html.DropDownList("ddlCategory", null, new { @class="form-control", id="ddlCategori"})
+                        </div>
+
+                        <div class="form-group">
+                            <label>Makale İçeriği</label>
+                            <textarea id="txtContent"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Etiketler</label>
+                            <input type="text" class="form-control" id="txtTags" placeholder="Ör: MVC, ASP.NET, Yazılım">
+                        </div>
+                        <div class="form-group">
+                            <label >Makale Resmi</label>
+                            <input type="file" id="fuImage">
+                            <p class="help-block">Azami 1MB boyutunda resim dosyası yükleyiniz</p>
+                        </div>
+                    </div><!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary" id="btnSave">Kaydet</button>
+                    </div>
+                @*</form>*@
+            </div><!-- /.box -->
+            
+        </div><!--/.col (left) -->
+        
+    </div>   <!-- /.row -->
+</section><!-- /.content -->
+
+<div id="divMessage"></div>
+
+<script type="text/javascript">
+    $().ready(function () {
+        $("#txtContent").ckeditor();
+        
+        $("#btnSave").click(function () {
+            var imageFile = $("#fuImage").prop("files")[0];
+            var imageName = $("#fuImage").val();
+            var imageData = new FormData();
+            imageData.append(imageName, imageFile);
+
+            $.ajax({
+                url: '@Url.Action("ArticleImageUpload")',
+                method: "post",
+                contentType: false,
+                processData: false,
+                data: imageData
+            }).success(function (incomingData) {
+                if(incomingData.Basari){
+                    var body = CKEDITOR.instances['txtContent'].getData();
+                    var formData = {
+                        ArticleName: $("#txtArticleName").val(),
+                        Content: body,
+                        CategoryId: $("#ddlCategori").val(),
+                        Tags: $("#txtTags").val()
+                    };
+
+                    $.ajax({
+                        url: '@Url.Action("AddArticle")',
+                        method: "post",
+                        datatype: "json",
+                        data: { jSonData: JSON.stringify(formData) }
+
+                    }).success(function (incomingVeri) {
+                        if (incomingVeri.Basari)
+                        {
+                            $("#divMessage").removeAttr("class")
+                                            .addClass("callout callout-success")
+                                            .html(incomingVeri.Message);
+                            setTimeout(function () {
+                                window.location.reload();
+                            }, 3000);
+                        }
+                    }).error(function (incomingVeri) {
+                        alert("error");
+                    });
+                }
+                else {
+                    alert(incomingData.Message);
+                }
+            });
+        });
+    });
+</script>

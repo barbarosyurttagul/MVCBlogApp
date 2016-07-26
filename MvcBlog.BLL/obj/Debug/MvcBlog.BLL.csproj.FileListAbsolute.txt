@@ -1,0 +1,11 @@
+C:\Users\Barbaros\documents\visual studio 2015\Projects\MVCBlogSolution\MvcBlog.BLL\bin\Debug\MvcBlog.BLL.dll
+C:\Users\Barbaros\documents\visual studio 2015\Projects\MVCBlogSolution\MvcBlog.BLL\bin\Debug\MvcBlog.BLL.pdb
+C:\Users\Barbaros\documents\visual studio 2015\Projects\MVCBlogSolution\MvcBlog.BLL\bin\Debug\EntityFramework.dll
+C:\Users\Barbaros\documents\visual studio 2015\Projects\MVCBlogSolution\MvcBlog.BLL\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Barbaros\documents\visual studio 2015\Projects\MVCBlogSolution\MvcBlog.BLL\bin\Debug\MvcBlog.Model.dll
+C:\Users\Barbaros\documents\visual studio 2015\Projects\MVCBlogSolution\MvcBlog.BLL\bin\Debug\MvcBlog.Model.pdb
+C:\Users\Barbaros\documents\visual studio 2015\Projects\MVCBlogSolution\MvcBlog.BLL\bin\Debug\EntityFramework.xml
+C:\Users\Barbaros\documents\visual studio 2015\Projects\MVCBlogSolution\MvcBlog.BLL\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Barbaros\documents\visual studio 2015\Projects\MVCBlogSolution\MvcBlog.BLL\obj\Debug\MvcBlog.BLL.csprojResolveAssemblyReference.cache
+C:\Users\Barbaros\documents\visual studio 2015\Projects\MVCBlogSolution\MvcBlog.BLL\obj\Debug\MvcBlog.BLL.dll
+C:\Users\Barbaros\documents\visual studio 2015\Projects\MVCBlogSolution\MvcBlog.BLL\obj\Debug\MvcBlog.BLL.pdb

@@ -1,0 +1,253 @@
+﻿
+@{
+    ViewBag.Title = "LoginUser";
+}
+
+@section myStyles{
+    @Styles.Render("~/Content/Login/css")
+    <style>
+        #islemSuruyorGenel {
+            display: none;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: #000;
+            opacity: 0.9;
+        }
+
+        #islemSuruyor {
+            position: absolute;
+            top: 25%;
+            left: 25%;
+            background-color: #fff;
+            border: 5px solid red;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 25px;
+        }
+    </style>
+}
+
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src="~/Content/css/Login/js/index.js"></script>
+
+
+<div id="islemSuruyorGenel">
+    <div id="islemSuruyor">
+        <img src="~/Content/images/loading.gif" style="width:256px;height:256px;" /><br />
+        İŞLEMİNİZ DEVAM EDİYOR. LÜTFEN BEKLEYİNİZ...
+    </div>
+</div>
+
+<div id="divMessage" class="info"></div>
+
+<div class="logmod__wrapper">
+    <span class="logmod__close">Kapat</span>
+    <div class="logmod__container">
+        <ul class="logmod__tabs">
+            <li data-tabtar="lgm-2"><a href="#">Giriş</a></li>
+            <li data-tabtar="lgm-1"><a href="#">Kaydol</a></li>
+        </ul>
+        <div class="logmod__tab-wrapper">
+            <div class="logmod__tab lgm-1">
+                <div class="logmod__heading">
+                    <span class="logmod__heading-subtitle"><strong>Hesap oluşturmak için </strong>bilgilerinizi giriniz </span>
+                </div>
+                <div class="logmod__form">
+                    <form accept-charset="utf-8" action="#" class="simform">
+                        <div class="sminputs">
+                            <div class="input string optional">
+                                <label class="string optional" for="user-firstname">ADINIZ</label>
+                                <input class="string optional" maxlength="255" id="user-firstname" placeholder="Adınızı Giriniz" type="text" size="50" />
+                            </div>
+                            <div class="input string optional">
+                                <label class="string optional" for="user-lastname">SOYADINIZ</label>
+                                <input class="string optional" maxlength="255" id="user-lastname" placeholder="Soyadınızı Giriniz" type="text" size="50" />
+                            </div>
+                        </div>
+                        <div class="sminputs">
+                            <div class="input full">
+                                <label class="string optional" for="user-name">Email*</label>
+                                <input class="string optional" maxlength="50" id="user-email" placeholder="Email" type="email" size="50"/>
+                            </div>
+                        </div>
+                        <div class="sminputs">
+                            <div class="input string optional">
+                                <label class="string optional" for="user-pw">ŞİFRE *</label>
+                                <input class="string optional" maxlength="255" id="user-pw" placeholder="Şifre" type="text" size="50" />
+                            </div>
+                            <div class="input string optional">
+                                <label class="string optional" for="user-pw-repeat">ŞİFRE TEKRARI *</label>
+                                <input class="string optional" maxlength="255" id="user-pw-repeat" placeholder="Şifre Tekrar" type="text" size="50" />
+                            </div>
+                        </div>
+                        <div class="sminputs">
+                            <div class="input string optional">
+                                <label class="string optional" for="captchaCode">GÜVENLİK KODU</label>
+                                @*<input class="string optional" maxlength="255" placeholder="Şifre" type="text" size="50" />*@
+                                <img src="@Url.Action("CaptchaImage", "Tools")" name="imgGuvenlikresmi" id="imgGuvenlikresmi"/>
+                            </div>
+                            <div class="input string optional">
+                                <label class="string optional" for="captchaCode">GÜVENLİK KODUNU GİRİNİZ</label>
+                                <input class="string optional" maxlength="255" id="captchaCode" placeholder="Güvenlik Kodunu Giriniz" type="text" size="50" />
+                            </div>
+                        </div>
+                        <div class="simform__actions">
+                            <input class="sumbit" name="commit" type="submit" value="Hesabı Oluştur" id="btnRegister" />
+                            <span class="simform__actions-sidetext">By creating an account you agree to our <a class="special" href="#" target="_blank" role="link">Terms & Privacy</a></span>
+                        </div>
+                    </form>
+                </div>
+                <div class="logmod__alter">
+                    <div class="logmod__alter-container">
+                        <a href="#" onClick="logInWithFacebook()" class="connect facebook">
+                            <div class="connect__icon">
+                                <i class="fa fa-facebook"></i>
+                            </div>
+                            <div class="connect__context">
+                                <span><strong>Facebook </strong>ile hesap oluşturun </span>
+                            </div>
+                        </a>
+
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="logmod__tab lgm-2">
+                <div class="logmod__heading">
+                    <span class="logmod__heading-subtitle">Giriş için Kullanıcı Adı ve Şifrenizi <strong>girin</strong></span>
+                </div>
+                <div class="logmod__form">
+                    <form accept-charset="utf-8" action="#" class="simform">
+                        <div class="sminputs">
+                            <div class="input full">
+                                <label class="string optional" for="user-name">Email*</label>
+                                <input class="string optional" maxlength="50" id="txtMail" name="txtMail" placeholder="Email" type="email" size="50" />
+                            </div>
+                        </div>
+                        <div class="sminputs">
+                            <div class="input full">
+                                <label class="string optional" for="user-pw">ŞİFRE *</label>
+                                <input class="string optional" maxlength="255" id="txtPassword" name="txtPassword" placeholder="Şifrenizi giriniz" type="password" size="50" />
+                                <span class="hide-password">Göster</span>
+                            </div>
+                        </div>
+                        <div class="simform__actions">
+                            <input id="btnLogin" class="sumbit" name="btnLogin" type="button" value="Giriş" />
+                            <span class="simform__actions-sidetext"><a class="special" role="link" href="#">Şifremi Unuttum<br>Tıklayın</a></span>
+                        </div>
+                    </form>
+                </div>
+                <div class="logmod__alter">
+                    <div class="logmod__alter-container">
+                        <a href="#" onClick="logInWithFacebook()" class="connect facebook">
+                            <div class="connect__icon">
+                                <i class="fa fa-facebook"></i>
+                            </div>
+                            <div class="connect__context">
+                                <span><strong>Facebook </strong>ile giriş</span>
+                            </div>
+                        </a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $().ready(function () {
+        $("#btnLogin").click(function () {
+            var veri =
+                {
+                    Mail: $("#txtMail").val(),
+                    Password: $("#txtPassword").val()
+                };
+            
+            $.ajax({
+                url: '@Url.Action("Login", "Member")',
+                method: "post",
+                datatype: "json",
+                data: { jSonVeri: JSON.stringify(veri) }
+            }).success(function (gelenVeri) {
+                if (gelenVeri.Basarili)
+                {
+                    window.location.href = "/Home/Index";
+                }
+                else {
+                    alert("Hatalı Giriş Yaptınız");
+                }
+            });
+        });
+    });
+</script>
+
+
+
+
+
+@Scripts.Render("~/bundles/MyScriptBundle")
+@section myScripts{
+
+    <script>
+    $().ready(function () {
+        $("#btnRegister").click(function () {
+            if (Validate()) {
+                //$("#islemSuruyorGenel").show();
+
+                var kullanici =
+                    {
+                        Name: $("#user-firstname").val(),
+                        LastName: $("#user-lastname").val(),
+                        Password: $("#user-pw").val(),
+                        Email: $("#user-email").val(),
+                        CaptchaCode: $("#captchaCode").val()
+                    };
+
+                $.ajax({
+                    url: "RegisterUser",
+                    method: "post",
+                    data: { jSonVeri: JSON.stringify(kullanici) },
+                    datatype: "json"
+                }).success(function (gelenVeri) {
+
+                    //$("#islemSuruyorGenel").hide();
+
+                    if (gelenVeri.Basari) {
+                        var div = $("#divMessage");
+                        div
+                            .removeAttr("class")
+                            .addClass("success")
+                            .text(gelenVeri.Mesaj);
+
+                        setTimeout(function () {
+                            window.location.href = "/Home/Index";
+                        }, 3000);
+                    }
+                    else {
+                        var div = $("#divMessage");
+                        div
+                            .removeAttr("class")
+                            .addClass("has-error")
+                            .text(gelenVeri.Mesaj);
+                    }
+                });
+            }
+        });
+
+    });
+    </script>
+}
+
+
+
+
+
+
+
+

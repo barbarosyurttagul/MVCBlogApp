@@ -1,0 +1,72 @@
+﻿@using MvcBlog.Model
+@model List<Article>
+
+<script type="text/javascript">
+    $().ready(function () {
+        $(".button-third").live("click", function () {
+
+            var page = parseInt($(this).html());
+
+            $.ajax({
+                url: '@Url.Action("ArticleList")',
+                data: { "page": page },
+                success: function (data) {
+                    $("#divSearchResults").html(data);
+                    $("html, body").animate({ scrollTop: 0 }, 200);//Sayfanın üstüne zıpla
+                }
+            });
+        });
+    });
+</script>
+
+
+@helper Shorten(string text)
+{
+    if (text.Length > 200)
+    {
+        <p>@text.Substring(0, 200)</p>
+    }
+    else
+    {
+        <p>@text</p>
+    }
+}
+
+
+
+<script type="text/javascript">
+    $().ready(function () {
+        $("#btnSearch").click(function () {
+
+            var searchString = $("#txtSearch").val();
+            
+                    $.ajax({
+                    url: '@Url.Action("SearchBar")',
+                    data: { 'searchString': searchString },
+                    method: "post"
+                }).success(function (searchStatus) {
+                    $("#divSearchResults").html(searchStatus);
+                }).error(function () {
+                    alert("error");
+                });
+
+
+        });
+    });
+</script>
+
+
+<div id="divSearchResults">
+   @Html.Partial("ArticleList")
+</div>
+
+
+
+
+
+
+
+
+
+
+

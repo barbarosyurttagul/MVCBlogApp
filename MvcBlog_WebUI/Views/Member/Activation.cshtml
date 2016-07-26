@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewBag.Title = "Activation";
+}
+
+<div id="divMessage" class="info">
+    Lütfen Formdaki Bilgileri Eksiksiz Doldurunuz
+</div>
+
+<div class="panel panel-default col-xs-6 col-sm-6 col-md-6">
+    
+    <div class="panel-body">
+        <form role="form">
+            <div class="form-group">
+                <input type="text" name="txtCode" id="txtCode" class="form-control input-sm" placeholder="Aktivasyon kodunu giriniz">
+            </div>
+
+            <input id="btnActivate" type="button" value="AKTİFLEŞTİR" name="btnActivate" class="btn btn-info btn-block">
+        </form>
+    </div>
+</div>
+
+@section myScripts    
+{
+    <script>
+        $().ready(function () {
+            $("#btnActivate").click(function () {
+                $.ajax({
+                    url: "Activate",
+                    datatype: "json",
+                    data: { code: $("#txtCode").val() },
+                    method: "post"
+                }).success(function (incomingData) {
+                    if (incomingData.Basari) {
+                        var div = $("#divMessage");
+                        div
+                            .removeAttr("class")
+                            .addClass("success")
+                            .text(incomingData.Mesaj);
+
+                        setTimeout(function () {
+                            window.location.href = "/Home/Index";
+                        }, 3000);
+                    }
+                    else {
+                        var div = $("#divMessage");
+                        div
+                            .removeAttr("class")
+                            .addClass("error")
+                            .text(incomingData.Mesaj);
+                    }
+                }).error(function (data) {
+                    alert("error");
+                });
+            });
+        });
+    </script>
+}

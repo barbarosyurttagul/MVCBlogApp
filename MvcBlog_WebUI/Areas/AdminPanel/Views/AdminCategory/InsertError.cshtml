@@ -1,0 +1,24 @@
+﻿@using MvcBlog.Model
+@model List<Category>
+
+<div class="box-body" id="boxUpdateCategory">
+    <table class="table table-bordered">
+        <tr>
+            <th style="width: 10px">Sıra No</th>
+            <th>Kategori Adı</th>
+            <th style="width: 40px">Makale Sayısı</th>
+            <th style="width: 40px">İşlem</th>
+        </tr>
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <tr>
+                <td>@(i + 1).</td>
+                <td><input type="text" value="@Model[i].CategoryName" id="txtCategory" /> </td>
+                <td><span class="badge bg-red">@Model[i].Articles.Count</span></td>
+                <td><input type="button" value="Güncelle" class="btn-file" id="btnUpdate" data-id="@Model[i].Id" /></td>
+            </tr>
+        }
+    </table>
+    <div class="alert alert-warning alert-dismissable">Kategoriyi boş bıraktınız veya daha önce olan bir kategori girdiniz</div>
+</div><!-- /.box-body -->
+

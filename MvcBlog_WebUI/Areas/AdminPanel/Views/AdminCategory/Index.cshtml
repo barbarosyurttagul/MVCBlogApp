@@ -1,0 +1,113 @@
+﻿@using MvcBlog.Model
+@model List<Category>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/AdminPanel/Views/Shared/_Layout.cshtml";
+}
+
+ <!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Kategori Güncelle</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body" id="boxUpdateCategory">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th style="width: 10px">Sıra No</th>
+                            <th>Kategori Adı</th>                          
+                            <th style="width: 40px">Makale Sayısı</th>
+                            <th style="width: 40px">İşlem</th>
+                        </tr>
+                        @for (int i = 0; i < Model.Count; i++)
+                        {
+                            <tr>
+                                <td>@(i+1).</td>
+                                <td><input type="text" value="@Model[i].CategoryName" id="txtCategory"/> </td>
+                                <td><span class="badge bg-red">@Model[i].Articles.Count</span></td>
+                                <td><input type="button" value="Güncelle" class="btn-file" id="btnUpdate" data-id="@Model[i].Id"/></td>
+                            </tr>
+                        }                     
+                    </table>
+                </div><!-- /.box-body -->
+            <div id="divMesaj"></div>
+            </div><!-- /.box -->
+           
+        </div><!-- /.col -->
+        <div class="col-md-6">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Kategori Ekle</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body" id="boxInsertCategory">
+                    <table class="table table-bordered">
+                        <tr>               
+                            <th>Kategori Adı</th>
+                            <th style="width: 40px">İşlem</th>
+                        </tr>
+                       
+                        <tr>                
+                            <td><input type="text" placeholder="Kategori Adı Giriniz" id="txtNewCategory"/> </td>                     
+                            <td><input type="button" value="Ekle" class="btn-flat" id="btnInsert"/></td>
+                        </tr>            
+                    </table>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+
+        </div>
+    </div><!-- /.row -->
+    
+</section><!-- /.content -->
+
+<script type="text/javascript">
+    $().ready(function () {
+        $(".btn-file").click(function () {
+            var outgoingData = {
+                categoryName : $(this).closest("tr").find("#txtCategory").val(),
+                categoryId : $(this).attr("data-id")
+            }
+            
+            $.ajax({
+                url: '@Url.Action("Update")',
+                method: "post",
+                datatype: "json",
+                data: { jSonData: JSON.stringify(outgoingData) },
+            }).success(function (incomingData) {
+                if (incomingData.Basarili) {
+                    alert(incomingData.Message);
+                } else {
+                    alert(incomingData.Message);                
+                }
+            });
+        });
+
+        
+        $("#btnInsert").click(function () {
+            var outgoingData = $("#txtNewCategory").val();
+            $.ajax({
+                url: 'Insert',
+                method: "post",
+                data: { newCategory: outgoingData }
+            }).success(function (incomingData) {
+                $("#boxUpdateCategory").html(incomingData);
+                $("#txtNewCategory").val('');
+            });
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+    });
+</script>
