@@ -1,0 +1,62 @@
+﻿@using MvcBlog.Model
+@model List<Article>
+
+<title>@ViewBag.Title</title>
+
+
+<div id="divSearchResults">
+    @if (Model.Count > 0)
+    {
+        foreach (var item in Model)
+        {
+            <div class="blog-post triggerAnimation animated" data-animate="slideInUp">
+                <a href="/Article/Detail/@item.Id"><img alt="" src="@item.Photo.CoverPicPath"></a>
+                <div class="post-content">
+                    <div class="post-date">
+                        <p><span>@item.PublishDate.Value.Day</span>@Convert.ToDateTime(item.PublishDate).ToString("MMM")</p>
+                    </div>
+                    <div class="content-data">
+                        <h2><a href="/Article/Detail/@item.Id">@item.ArticleName.ToUpper()</a></h2>
+                        <p><a>@item.Comments.Count Yorum</a></p>
+                    </div>
+                    @if (item.ArticleContent.Length > 200)
+                    {
+                        @Html.Raw(item.ArticleContent.Substring(0, 200))
+                    }
+                    else
+                    {
+                        @Html.Raw(item.ArticleContent)
+                    }
+                    <a class="button-third" href="/Article/Detail/@item.Id">Devam et</a>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>Kategoride makale bulunamadı!</p>
+    }
+</div>
+
+
+
+
+<script type="text/javascript">
+    $().ready(function () {
+        $("#btnSearch").click(function () {
+
+            $.ajax({
+                url: '@Url.Action("SearchBar", "Home")',
+                data:  {'searchString' : $("#txtSearch").val()} ,
+                method: "post"
+            }).success(function (searchStatus) {
+                $("#divSearchResults").html(searchStatus);
+                $("title").html($("#txtSearch").val() + " kelimesine göre sonuçlar.");
+            }).error(function () {
+                alert("error");
+            });
+        });
+    });
+</script>
+
+

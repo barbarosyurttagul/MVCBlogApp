@@ -1,0 +1,4 @@
+C:\Users\Barbaros\documents\visual studio 2015\Projects\MVCBlogSolution\MvcBlog.Tools\bin\Debug\MvcBlog.Tools.dll
+C:\Users\Barbaros\documents\visual studio 2015\Projects\MVCBlogSolution\MvcBlog.Tools\bin\Debug\MvcBlog.Tools.pdb
+C:\Users\Barbaros\documents\visual studio 2015\Projects\MVCBlogSolution\MvcBlog.Tools\obj\Debug\MvcBlog.Tools.dll
+C:\Users\Barbaros\documents\visual studio 2015\Projects\MVCBlogSolution\MvcBlog.Tools\obj\Debug\MvcBlog.Tools.pdb

@@ -1,0 +1,9 @@
+C:\Users\Barbaros\documents\visual studio 2015\Projects\MVCBlogSolution\MvcBlog.Model\bin\Debug\MvcBlog.Model.dll.config
+C:\Users\Barbaros\documents\visual studio 2015\Projects\MVCBlogSolution\MvcBlog.Model\bin\Debug\MvcBlog.Model.dll
+C:\Users\Barbaros\documents\visual studio 2015\Projects\MVCBlogSolution\MvcBlog.Model\bin\Debug\MvcBlog.Model.pdb
+C:\Users\Barbaros\documents\visual studio 2015\Projects\MVCBlogSolution\MvcBlog.Model\bin\Debug\EntityFramework.dll
+C:\Users\Barbaros\documents\visual studio 2015\Projects\MVCBlogSolution\MvcBlog.Model\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Barbaros\documents\visual studio 2015\Projects\MVCBlogSolution\MvcBlog.Model\bin\Debug\EntityFramework.xml
+C:\Users\Barbaros\documents\visual studio 2015\Projects\MVCBlogSolution\MvcBlog.Model\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Barbaros\documents\visual studio 2015\Projects\MVCBlogSolution\MvcBlog.Model\obj\Debug\MvcBlog.Model.dll
+C:\Users\Barbaros\documents\visual studio 2015\Projects\MVCBlogSolution\MvcBlog.Model\obj\Debug\MvcBlog.Model.pdb

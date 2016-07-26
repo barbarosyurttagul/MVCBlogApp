@@ -1,0 +1,271 @@
+﻿@using MvcBlog.Model
+@model Article
+
+@{
+    ViewBag.Title = "Detail";
+}
+
+@helper CommentTime(DateTime date)
+{
+    TimeSpan time = DateTime.Now - date;
+    if (time.TotalMilliseconds < 0)
+    {
+        <div class="time-ago"></div>
+
+}
+    else if (time.TotalMinutes < 1)
+    {
+            <div class="time-ago">Şimdi</div>
+    }
+    else if (time.TotalHours < 1)
+    {
+            <div class="time-ago">@time.Minutes dakika önce</div>
+    }
+    else if (time.TotalDays < 1)
+    {
+            <div class="time-ago">@time.Hours saat önce</div>
+    }
+    else
+    {
+            <div class="time-ago">@date.ToString()</div>
+    }
+}
+<div id="divSearchResults">
+    <div class="blog-post single-post triggerAnimation animated" data-animate="slideInUp">
+        <img alt="" src="@Model.Photo.CoverPicPath">
+        <div class="post-content">
+            <div class="post-date">
+                <p><span>@Model.PublishDate.Value.Day</span>@Convert.ToDateTime(Model.PublishDate).ToString("MMM")</p>
+            </div>
+            <div class="content-data">
+                <h2><a href="">@Model.ArticleName.ToUpper()</a></h2>
+                <p><a href="#Comments">@Model.Comments.Count Yorum</a></p>
+            </div>
+            @Html.Raw(Model.ArticleContent)
+
+            <div class="share-tag-box">
+                <ul class="post-tags">
+                    <li><span>Etiketler:</span></li>
+                    @if (Model.Tags.Count > 0)
+                {
+                    foreach (var item in ViewBag.tagData)
+                    {
+                        if (!item.Equals(ViewBag.lastTagData))
+                        {
+                                <li><a href="/Tag/Index/@item.TagId">@item.TagName,</a></li>
+                        }
+                        else
+                        {
+                                <li><a href="/Tag/Index/@item.TagId">@item.TagName</a></li>
+                        }
+                    }
+                }
+                else
+                {
+                        <li><p>Etiket bulunamadı!</p></li>
+                }
+
+
+                </ul>
+                <span>Bu yazıyı paylaşın:</span>
+                <div id="fb-root"></div>
+                <ul class="social-box">
+                    <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+                    <li><a class="twitter-share-button" href="https://twitter.com/share" data-url="http://localhost:4300/Article/Detail/@Model.Id" data-text="Enter Data text here" data-size="large" data-count="none">Tweet</a></li>
+                    @*<li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>*@
+                    <li><a class="dribble" href="#"><i class="fa fa-dribbble"></i></a></li>
+                    <li><a class="google" href="#"><i class="fa fa-google-plus"></i></a></li>
+                    <li><a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a></li>
+                    <li><a class="pinterest" href="#"><i class="fa fa-pinterest"></i></a></li>
+                </ul>
+            </div>
+
+            <div class="pagination-boxer">
+                <div class="prev-post">
+                    <a href="/Article/DetailPrev/@Model.Id" class="button-third"><i class="fa fa-angle-left"></i> ÖNCEKİ </a>
+                    <p>@ViewBag.prevArticle.ArticleName </p>
+                </div>
+                <div class="next-post">
+                    <a href="/Article/DetailNext/@Model.Id" class="button-third"> SONRAKİ <i class="fa fa-angle-right"></i></a>
+                    <p>@ViewBag.nextArticle.ArticleName </p>
+                </div>
+            </div>
+
+            <a id="Comments"></a>
+            <div class="comment-section">
+                @if (Model.Comments.Count == 0)
+            {
+                    <h3>Henüz Yorum Yapılmadı</h3>
+            }
+            else
+            {
+                    <h3>@Model.Comments.Count Yorum</h3>
+            }
+
+                @if (Model.Comments.Count > 0)
+            {
+                for (int i = 0; i < Model.Comments.Count; i++)
+                {
+                        <ul class="comment-tree">
+                            @if (ViewBag.commentData[i].ParentCommentId == null) //Herhangi bir yoruma yanıt olmayan bireysel bir yorumsa
+                        {
+                                <li>
+                                    <div class="comment-box">
+                                        @if (ViewBag.commentData[i].Member.MemberTypeId == 1)//normal yoldan kaydolan kullanıcı için gözükecek bölüm
+                                    {
+                                            <img alt="" src="@ViewBag.commentData[i].Member.Photo.ThumbnailPath">
+                                    }
+                                    else if (ViewBag.commentData[i].Member.MemberTypeId == 2)//eğer facebook ile bağlanan kullanıcıysa gözükecek bölüm
+                                    {
+                                            <img alt="" src="@ViewBag.commentData[i].Member.PictureURL">
+                                    }
+
+                                        <div class="comment-content">
+                                            <h4>@ViewBag.commentData[i].Member.Name @ViewBag.commentData[i].Member.LastName</h4>
+                                            <span>@CommentTime(ViewBag.commentData[i].AddedDate)</span>
+                                            <p>@ViewBag.commentData[i].CommentContent</p>
+
+                                            @if (Session["ActiveMember"] != null)
+                                        {
+                                                <a href="">Yanıtla</a> //Yapılan bir yoruma yanıtlama kısmını sonra yapacağım
+                                        }
+
+                                        </div>
+                                    </div>
+                                </li>
+                        }
+                            <li>
+                                @for (int j = 0; j < Model.Comments.Count; j++)
+                            {
+                                if (ViewBag.commentData[j].ParentCommentId != null) //Daha önce yapılan bir yoruma yapılan bir yorumsa
+                                {
+                                    if (ViewBag.commentData[j].ParentCommentId == ViewBag.commentData[i].Id)
+                                    {
+                                            <ul class="depth">
+                                                <li>
+                                                    <div class="comment-box">
+                                                        <img alt="" src="@ViewBag.commentData[i].Member.Photo.ThumbnailPath">
+                                                        <div class="comment-content">
+                                                            <h4>@ViewBag.commentData[j].Member.Name @ViewBag.commentData[j].Member.LastName</h4>
+                                                            <span>@CommentTime(ViewBag.commentData[i].AddedDate)</span>
+                                                            <p>@ViewBag.commentData[j].CommentContent</p>
+                                                            <a href="#">Yanıtla</a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                    }
+                                }
+                            }
+                            </li>
+                        </ul>
+                }
+            }
+            </div>
+
+            @*Kayıtlı kullanıcıların yorumlu yapabilmesi için session'da kullanıcı varsa gözükecek bölüm*@
+            @if (Session["ActiveMember"] != null)
+        {
+            if (ViewBag.Member.MemberTypeId == 1)//normal yoldan kaydolan kullanıcı için gözükecek bölüm
+            {
+                    <div class="comment-section">
+                        <ul class="comment-tree">
+
+                            <li>
+                                <div class="comment-box">
+                                    <img alt="" src="@ViewBag.Member.Photo.ThumbnailPath">
+                                    <div class="comment-content">
+                                        <textarea rows="4" cols="50" name="comment" id="txtComment" placeholder="Yorumunuz (gerekli)"></textarea>
+                                        <input type="submit" id="submit_contact" value="Gönder">
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+            }
+
+            if (ViewBag.Member.MemberTypeId == 2)//eğer facebook ile bağlanan kullanıcıysa gözükecek bölüm
+            {
+                    <div class="comment-section">
+                        <ul class="comment-tree">
+
+                            <li>
+                                <div class="comment-box">
+                                    <img alt="" src="@ViewBag.Member.PictureURL">
+                                    <div class="comment-content">
+                                        <textarea rows="4" cols="50" name="comment" id="txtComment" placeholder="Yorumunuz (gerekli)"></textarea>
+                                        <input type="submit" id="submit_contact" value="Gönder">
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+            }
+
+
+                <div id="divMessage"></div>
+        }
+        else
+        {
+                <p>Yorum yapmak için giriş yapınız!</p>
+        }
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $().ready(function () {
+        $("body").on("click", "#submit_contact", function () {
+            var formData = {
+                comment: $("#txtComment").val(),
+                articleId: "@Model.Id"
+            };
+
+            $.ajax({
+                url: '@Url.Action("SaveComment")',
+                datatype: "json",
+                method: "post",
+                data: { incomingData: JSON.stringify(formData) }
+            }).success(function (veri) {
+                if (veri.Basari) {
+                    $("#divMessage").removeAttr("class").addClass("success").html(veri.Mesaj);
+                    window.location.reload();
+                }
+            });
+
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $().ready(function () {
+        $("#submit_contact").click(function () {
+            var text = $("#txtComment").val();
+            if (text == "") {
+                $("#divMessage").removeAttr("class").addClass("success").html("Yorum boş girilemez");
+                return false;
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $().ready(function () {
+        $("#btnSearch").click(function () {
+
+            $.ajax({
+                url: '@Url.Action("SearchBar", "Home")',
+                data:  {'searchString' : $("#txtSearch").val()} ,
+                method: "post"
+            }).success(function (searchStatus) {
+                $("#divSearchResults").html(searchStatus);
+                $("title").html($("#txtSearch").val() + " kelimesine göre sonuçlar.");
+            }).error(function () {
+                alert("error");
+            });
+        });
+    });
+</script>
+
+
+
+

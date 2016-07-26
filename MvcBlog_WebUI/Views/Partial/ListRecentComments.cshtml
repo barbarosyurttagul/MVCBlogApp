@@ -1,0 +1,33 @@
+﻿@using MvcBlog.Model
+@model List<Comment>
+
+@if (Model.Count > 0)
+{
+    <div class="popular-widget widget">
+        <h3>Son Yorumlar</h3>
+        <ul class="popular-list">
+            @foreach (Comment item in Model)
+            {
+                <li>
+                    @if (item.Member.MemberTypeId == 1)
+                    {
+                        <img alt="" src="@item.Member.Photo.ThumbnailPath" width="60" height="60">
+                    }else if (item.Member.MemberTypeId == 2)
+                    {
+                        <img alt="" src="@item.Member.PictureURL" width="60" height="60">
+                    }
+                    
+                    <div class="side-content">
+                        <h2><a href="/Article/Detail/@item.ArticleId">@item.Article.ArticleName</a></h2>
+                        <p>@item.AddedDate.Value.ToShortDateString()</p>
+                        <p>by @item.Member.Name @item.Member.LastName</p>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+}
+else
+{
+    <p>Makale bulunamadı!</p>
+}

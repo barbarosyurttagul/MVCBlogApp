@@ -1,0 +1,587 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PersonalBlogModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Article">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ArticleName" Type="nvarchar" MaxLength="250" />
+          <Property Name="ArticleContent" Type="nvarchar(max)" />
+          <Property Name="PublishDate" Type="datetime" />
+          <Property Name="CategoryId" Type="int" />
+          <Property Name="CoverPhotoId" Type="int" />
+          <Property Name="Displayed" Type="int" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="ArticleTag">
+          <Key>
+            <PropertyRef Name="ArticleId" />
+            <PropertyRef Name="TagId" />
+          </Key>
+          <Property Name="ArticleId" Type="int" Nullable="false" />
+          <Property Name="TagId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MemberId" Type="nvarchar" MaxLength="128" />
+          <Property Name="ArticleId" Type="int" />
+          <Property Name="CommentContent" Type="nvarchar(max)" />
+          <Property Name="AddedDate" Type="datetime" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="ParentCommentId" Type="int" />
+        </EntityType>
+        <EntityType Name="Member">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="Password" Type="varchar" MaxLength="256" />
+          <Property Name="RegisterDate" Type="datetime" />
+          <Property Name="NickName" Type="nvarchar" MaxLength="50" />
+          <Property Name="PhotoId" Type="int" />
+          <Property Name="IsAdmin" Type="bit" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="ActivationCode" Type="uniqueidentifier" />
+          <Property Name="MemberTypeId" Type="int" />
+          <Property Name="PictureURL" Type="nvarchar" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="MemberType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Photo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="ThumbnailPath" Type="nvarchar" MaxLength="500" />
+          <Property Name="MediumSizePath" Type="nvarchar" MaxLength="500" />
+          <Property Name="CoverPicPath" Type="nvarchar" MaxLength="500" />
+          <Property Name="AddDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Tag">
+          <Key>
+            <PropertyRef Name="TagId" />
+          </Key>
+          <Property Name="TagId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TagName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_Article_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="Article" Type="Self.Article" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Article">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Article_Photo">
+          <End Role="Photo" Type="Self.Photo" Multiplicity="0..1" />
+          <End Role="Article" Type="Self.Article" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Photo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Article">
+              <PropertyRef Name="CoverPhotoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArticleTag_Article">
+          <End Role="Article" Type="Self.Article" Multiplicity="1" />
+          <End Role="ArticleTag" Type="Self.ArticleTag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArticleTag">
+              <PropertyRef Name="ArticleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArticleTag_Tag">
+          <End Role="Tag" Type="Self.Tag" Multiplicity="1" />
+          <End Role="ArticleTag" Type="Self.ArticleTag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tag">
+              <PropertyRef Name="TagId" />
+            </Principal>
+            <Dependent Role="ArticleTag">
+              <PropertyRef Name="TagId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_Article">
+          <End Role="Article" Type="Self.Article" Multiplicity="0..1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="ArticleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_Member">
+          <End Role="Member" Type="Self.Member" Multiplicity="0..1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Member_MemberType">
+          <End Role="MemberType" Type="Self.MemberType" Multiplicity="0..1" />
+          <End Role="Member" Type="Self.Member" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MemberType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Member">
+              <PropertyRef Name="MemberTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Member_Photo">
+          <End Role="Photo" Type="Self.Photo" Multiplicity="0..1" />
+          <End Role="Member" Type="Self.Member" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Photo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Member">
+              <PropertyRef Name="PhotoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PersonalBlogModelStoreContainer">
+          <EntitySet Name="Article" EntityType="Self.Article" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ArticleTag" EntityType="Self.ArticleTag" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Member" EntityType="Self.Member" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MemberType" EntityType="Self.MemberType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Photo" EntityType="Self.Photo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tag" EntityType="Self.Tag" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Article_Category" Association="Self.FK_Article_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Article" EntitySet="Article" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Article_Photo" Association="Self.FK_Article_Photo">
+            <End Role="Photo" EntitySet="Photo" />
+            <End Role="Article" EntitySet="Article" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArticleTag_Article" Association="Self.FK_ArticleTag_Article">
+            <End Role="Article" EntitySet="Article" />
+            <End Role="ArticleTag" EntitySet="ArticleTag" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArticleTag_Tag" Association="Self.FK_ArticleTag_Tag">
+            <End Role="Tag" EntitySet="Tag" />
+            <End Role="ArticleTag" EntitySet="ArticleTag" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_Article" Association="Self.FK_Comment_Article">
+            <End Role="Article" EntitySet="Article" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_Member" Association="Self.FK_Comment_Member">
+            <End Role="Member" EntitySet="Member" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Member_MemberType" Association="Self.FK_Member_MemberType">
+            <End Role="MemberType" EntitySet="MemberType" />
+            <End Role="Member" EntitySet="Member" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Member_Photo" Association="Self.FK_Member_Photo">
+            <End Role="Photo" EntitySet="Photo" />
+            <End Role="Member" EntitySet="Member" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PersonalBlogModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Article">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+          <Property Name="ArticleName" MaxLength="250" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="PublishDate" Precision="3" Type="DateTime" />
+          <Property Name="CategoryId" Type="Int32" />
+          <Property Name="CoverPhotoId" Type="Int32" />
+          <Property Name="Displayed" Type="Int32" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="Category" Relationship="Self.FK_Article_Category" FromRole="Article" ToRole="Category" />
+          <NavigationProperty Name="Photo" Relationship="Self.FK_Article_Photo" FromRole="Article" ToRole="Photo" />
+          <NavigationProperty Name="Comments" Relationship="Self.FK_Comment_Article" FromRole="Article" ToRole="Comment" />
+          <NavigationProperty Name="Tags" Relationship="PersonalBlogModel.ArticleTag" FromRole="Article" ToRole="Tag" />
+          <Property Name="ArticleContent" MaxLength="Max" FixedLength="false" Unicode="true" Type="String" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Articles" Relationship="Self.FK_Article_Category" FromRole="Category" ToRole="Article" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ArticleId" Type="Int32" />
+          <Property Name="AddedDate" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="Article" Relationship="Self.FK_Comment_Article" FromRole="Comment" ToRole="Article" />
+          <Property Name="MemberId" Type="String" MaxLength="128" Unicode="true" FixedLength="false" />
+          <Property Name="CommentContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ParentCommentId" Type="Int32" />
+          <NavigationProperty Name="Member" Relationship="PersonalBlogModel.FK_Comment_Member" FromRole="Comment" ToRole="Member" />
+        </EntityType>
+        <EntityType Name="Photo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ThumbnailPath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MediumSizePath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CoverPicPath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AddDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Articles" Relationship="Self.FK_Article_Photo" FromRole="Photo" ToRole="Article" />
+          <NavigationProperty Name="Members" Relationship="PersonalBlogModel.FK_Member_Photo" FromRole="Photo" ToRole="Member" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_Article_Category">
+          <End Type="Self.Category" Multiplicity="0..1" Role="Category" />
+          <End Type="Self.Article" Multiplicity="*" Role="Article" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Article">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Article_Photo">
+          <End Type="Self.Photo" Multiplicity="0..1" Role="Photo" />
+          <End Type="Self.Article" Multiplicity="*" Role="Article" />
+          <ReferentialConstraint>
+            <Principal Role="Photo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Article">
+              <PropertyRef Name="CoverPhotoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_Article">
+          <End Type="Self.Article" Multiplicity="0..1" Role="Article" />
+          <End Type="Self.Comment" Multiplicity="*" Role="Comment" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="ArticleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PersonalBlogEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Articles" EntityType="Self.Article" />
+          <EntitySet Name="Categories" EntityType="Self.Category" />
+          <EntitySet Name="Comments" EntityType="Self.Comment" />
+          <EntitySet Name="Photos" EntityType="Self.Photo" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <AssociationSet Name="FK_Article_Category" Association="Self.FK_Article_Category">
+            <End EntitySet="Categories" Role="Category" />
+            <End EntitySet="Articles" Role="Article" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Article_Photo" Association="Self.FK_Article_Photo">
+            <End EntitySet="Photos" Role="Photo" />
+            <End EntitySet="Articles" Role="Article" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_Article" Association="Self.FK_Comment_Article">
+            <End EntitySet="Articles" Role="Article" />
+            <End EntitySet="Comments" Role="Comment" />
+          </AssociationSet>
+          <EntitySet Name="Tags" EntityType="PersonalBlogModel.Tag" />
+          <AssociationSet Name="ArticleTag" Association="PersonalBlogModel.ArticleTag">
+            <End EntitySet="Articles" Role="Article" />
+            <End EntitySet="Tags" Role="Tag" />
+          </AssociationSet>
+          <EntitySet Name="Members" EntityType="PersonalBlogModel.Member" />
+          <AssociationSet Name="FK_Comment_Member" Association="PersonalBlogModel.FK_Comment_Member">
+            <End Role="Member" EntitySet="Members" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Member_Photo" Association="PersonalBlogModel.FK_Member_Photo">
+            <End Role="Photo" EntitySet="Photos" />
+            <End Role="Member" EntitySet="Members" />
+          </AssociationSet>
+          <EntitySet Name="MemberTypes" EntityType="PersonalBlogModel.MemberType" />
+          <AssociationSet Name="FK_Member_MemberType" Association="PersonalBlogModel.FK_Member_MemberType">
+            <End Role="MemberType" EntitySet="MemberTypes" />
+            <End Role="Member" EntitySet="Members" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Tag">
+          <Key>
+            <PropertyRef Name="TagId" />
+          </Key>
+          <Property Name="TagId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TagName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Articles" Relationship="PersonalBlogModel.ArticleTag" FromRole="Tag" ToRole="Article" />
+        </EntityType>
+        <Association Name="ArticleTag">
+          <End Type="PersonalBlogModel.Article" Multiplicity="*" Role="Article" />
+          <End Type="PersonalBlogModel.Tag" Multiplicity="*" Role="Tag" />
+        </Association>
+        <EntityType Name="Member">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" annotation:StoreGeneratedPattern="None" MaxLength="128" Unicode="true" FixedLength="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="RegisterDate" Type="DateTime" Precision="3" />
+          <Property Name="NickName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PhotoId" Type="Int32" />
+          <Property Name="IsAdmin" Type="Boolean" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="Comments" Relationship="PersonalBlogModel.FK_Comment_Member" FromRole="Member" ToRole="Comment" />
+          <NavigationProperty Name="Photo" Relationship="PersonalBlogModel.FK_Member_Photo" FromRole="Member" ToRole="Photo" />
+          <Property Name="ActivationCode" Type="Guid" />
+          <Property Name="MemberTypeId" Type="Int32" />
+          <Property Name="PictureURL" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MemberType" Relationship="PersonalBlogModel.FK_Member_MemberType" FromRole="Member" ToRole="MemberType" />
+        </EntityType>
+        <Association Name="FK_Comment_Member">
+          <End Type="PersonalBlogModel.Member" Role="Member" Multiplicity="0..1" />
+          <End Type="PersonalBlogModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Member_Photo">
+          <End Type="PersonalBlogModel.Photo" Role="Photo" Multiplicity="0..1" />
+          <End Type="PersonalBlogModel.Member" Role="Member" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Photo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Member">
+              <PropertyRef Name="PhotoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="MemberType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Members" Relationship="PersonalBlogModel.FK_Member_MemberType" FromRole="MemberType" ToRole="Member" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_Member_MemberType">
+          <End Type="PersonalBlogModel.MemberType" Role="MemberType" Multiplicity="0..1" />
+          <End Type="PersonalBlogModel.Member" Role="Member" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MemberType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Member">
+              <PropertyRef Name="MemberTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PersonalBlogModelStoreContainer" CdmEntityContainer="PersonalBlogEntities">
+          <EntitySetMapping Name="Articles">
+            <EntityTypeMapping TypeName="PersonalBlogModel.Article">
+              <MappingFragment StoreEntitySet="Article">
+                <ScalarProperty Name="ArticleContent" ColumnName="ArticleContent" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ArticleName" ColumnName="ArticleName" />
+                <ScalarProperty Name="PublishDate" ColumnName="PublishDate" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="CoverPhotoId" ColumnName="CoverPhotoId" />
+                <ScalarProperty Name="Displayed" ColumnName="Displayed" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="PersonalBlogModel.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="PersonalBlogModel.Comment">
+              <MappingFragment StoreEntitySet="Comment">
+                <ScalarProperty Name="ParentCommentId" ColumnName="ParentCommentId" />
+                <ScalarProperty Name="CommentContent" ColumnName="CommentContent" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ArticleId" ColumnName="ArticleId" />
+                <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Photos">
+            <EntityTypeMapping TypeName="PersonalBlogModel.Photo">
+              <MappingFragment StoreEntitySet="Photo">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ThumbnailPath" ColumnName="ThumbnailPath" />
+                <ScalarProperty Name="MediumSizePath" ColumnName="MediumSizePath" />
+                <ScalarProperty Name="CoverPicPath" ColumnName="CoverPicPath" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="PersonalBlogModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tags">
+            <EntityTypeMapping TypeName="PersonalBlogModel.Tag">
+              <MappingFragment StoreEntitySet="Tag">
+                <ScalarProperty Name="TagName" ColumnName="TagName" />
+                <ScalarProperty Name="TagId" ColumnName="TagId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="ArticleTag" TypeName="PersonalBlogModel.ArticleTag" StoreEntitySet="ArticleTag">
+            <EndProperty Name="Tag">
+              <ScalarProperty Name="TagId" ColumnName="TagId" />
+            </EndProperty>
+            <EndProperty Name="Article">
+              <ScalarProperty Name="Id" ColumnName="ArticleId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="Members">
+            <EntityTypeMapping TypeName="PersonalBlogModel.Member">
+              <MappingFragment StoreEntitySet="Member">
+                <ScalarProperty Name="PictureURL" ColumnName="PictureURL" />
+                <ScalarProperty Name="MemberTypeId" ColumnName="MemberTypeId" />
+                <ScalarProperty Name="ActivationCode" ColumnName="ActivationCode" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+                <ScalarProperty Name="PhotoId" ColumnName="PhotoId" />
+                <ScalarProperty Name="NickName" ColumnName="NickName" />
+                <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MemberTypes">
+            <EntityTypeMapping TypeName="PersonalBlogModel.MemberType">
+              <MappingFragment StoreEntitySet="MemberType">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

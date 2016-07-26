@@ -1,0 +1,29 @@
+﻿@{
+    bool memberActive = ViewBag.MemberActive;
+    MvcBlog.Model.Member m = ViewBag.Member as MvcBlog.Model.Member;
+
+    if (memberActive)
+    {
+        <li class="drop">
+            <a href="#" class="open-search">@m.Name @m.LastName<i class="fa fa-sign-out"></i></a>
+            <form class="form-search">
+                <button type="submit" id="btnLogOut">
+                    <i class="fa fa-sign-out"></i>
+                </button>
+                <a href="#">Bilgilerimi Güncelle<i class="fa fa-refresh"></i></a>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li>
+            <a href="/Member/LoginUser">GİRİŞ <i class="fa fa-sign-in"></i></a>
+        </li>      
+    }
+}
+
+
+
+
+
+

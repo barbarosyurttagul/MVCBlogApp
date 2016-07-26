@@ -1,0 +1,13 @@
+﻿@using MvcBlog.Model
+@model List<Category>
+
+
+<div class="category-widget widget">
+    <h3>Kategoriler</h3>
+    <ul class="category-list">
+        @foreach (Category item in Model)
+        {
+           <li><a href="/Category/Index/@item.Id">@item.CategoryName (@item.Articles.Count)</a></li>
+        }
+    </ul>
+</div>
